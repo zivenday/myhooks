@@ -3,8 +3,8 @@ import logo from './logo.svg'
 import './App.css'
 import useSize from './hooks/useSize'
 import useDrag from './hooks/useDrag'
-import useRequest from './ahooks/src/package/useRequest'
-
+import useRequest from './hooks/useRequest'
+import Mock from 'mockjs'
 function App() {
   const appRef: MutableRefObject<any> = useRef(null)
   const { width, height } = useSize(appRef)
@@ -16,12 +16,17 @@ function App() {
   }
   const { isDraging } = useDrag(dragRef, { dragstart })
   const handleClick = () => {}
-  useRequest(
-    () =>
-      new Promise((resolve) => {
-        resolve('')
-      })
-  )
+
+  const request = () => {
+    return new Promise((resolve, reject) => {
+      const name = Mock.mock('@email')
+      resolve(name)
+    })
+  }
+  const { data, run } = useRequest(request)
+  const handleReQuestClick = () => {
+    run()
+  }
   return (
     <div className="App" ref={appRef} onClick={handleClick}>
       <header className="App-header">
@@ -38,6 +43,12 @@ function App() {
             拖拽物体
           </div>
           <div>拖拽状态：{isDraging ? '正在拖拽' : '停止拖拽'}</div>
+        </div>
+        <div>
+          _________________________
+          <h1>useRequest</h1>
+          {data}
+          <button onClick={handleReQuestClick}>点击产生数据</button>
         </div>
       </header>
     </div>

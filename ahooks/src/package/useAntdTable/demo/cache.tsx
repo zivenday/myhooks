@@ -1,56 +1,54 @@
-import React, { useState } from 'react';
-import { Button, Col, Form, Input, Row, Table, Select } from 'antd';
-import { useAntdTable, clearCache } from 'ahooks';
-import ReactJson from 'react-json-view';
+import React, { useState } from 'react'
+import { Button, Col, Form, Input, Row, Table, Select } from 'antd'
+import { useAntdTable, clearCache } from 'ahooks'
 
-const { Option } = Select;
+import ReactJson from 'react-json-view'
+
+const { Option } = Select
 
 interface Item {
   name: {
-    last: string;
-  };
-  email: string;
-  phone: string;
-  gender: 'male' | 'female';
+    last: string
+  }
+  email: string
+  phone: string
+  gender: 'male' | 'female'
 }
 
 interface Result {
-  total: number;
-  list: Item[];
+  total: number
+  list: Item[]
 }
 
-const getTableData = (
-  { current, pageSize, sorter, filters, extra },
-  formData: Object,
-): Promise<Result> => {
-  console.log(sorter, filters, extra);
-  let query = `page=${current}&size=${pageSize}`;
+const getTableData = ({ current, pageSize, sorter, filters, extra }, formData: Object): Promise<Result> => {
+  console.log(sorter, filters, extra)
+  let query = `page=${current}&size=${pageSize}`
   Object.entries(formData).forEach(([key, value]) => {
     if (value) {
-      query += `&${key}=${value}`;
+      query += `&${key}=${value}`
     }
-  });
+  })
 
   return fetch(`https://randomuser.me/api?results=55&${query}`)
     .then((res) => res.json())
     .then((res) => ({
       total: res.info.results,
       list: res.results,
-    }));
-};
+    }))
+}
 
 const UserList = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
   const { tableProps, search, params } = useAntdTable(getTableData, {
     defaultPageSize: 5,
     form,
     cacheKey: 'useAntdTableCache',
-  });
+  })
 
-  const { sorter = {}, filters = {} } = params[0] || ({} as any);
+  const { sorter = {}, filters = {} } = params[0] || ({} as any)
 
-  const { type, changeType, submit, reset } = search;
+  const { type, changeType, submit, reset } = search
 
   const columns = [
     {
@@ -76,7 +74,7 @@ const UserList = () => {
       ],
       filteredValue: filters.gender,
     },
-  ];
+  ]
 
   const advanceSearchForm = (
     <div>
@@ -111,7 +109,7 @@ const UserList = () => {
         </Row>
       </Form>
     </div>
-  );
+  )
 
   const searchForm = (
     <div style={{ marginBottom: 16 }}>
@@ -131,7 +129,7 @@ const UserList = () => {
         </Button>
       </Form>
     </div>
-  );
+  )
 
   return (
     <div>
@@ -145,18 +143,18 @@ const UserList = () => {
         <ReactJson src={params[0]!} collapsed={2} />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Demo = () => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(true)
 
   return (
     <div>
       <Button
         danger
         onClick={() => {
-          setShow(!show);
+          setShow(!show)
         }}
         style={{ marginBottom: 16 }}
       >
@@ -165,7 +163,7 @@ const Demo = () => {
       <Button
         danger
         onClick={() => {
-          clearCache('useAntdTableCache');
+          clearCache('useAntdTableCache')
         }}
         style={{ marginBottom: 16, marginLeft: 8 }}
       >
@@ -173,7 +171,7 @@ const Demo = () => {
       </Button>
       {show && <UserList />}
     </div>
-  );
-};
+  )
+}
 
-export default Demo;
+export default Demo

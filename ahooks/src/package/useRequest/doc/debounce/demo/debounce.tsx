@@ -1,21 +1,20 @@
-import { useRequest } from 'ahooks';
-import Mock from 'mockjs';
-import React from 'react';
+import { useRequest } from '../../../../index'
+import { mock } from 'mockjs'
 
 async function getEmail(search?: string): Promise<string[]> {
-  console.log('debounce getEmail', search);
+  console.log('debounce getEmail', search)
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(Mock.mock({ 'data|5': ['@email'] }).data);
-    }, 300);
-  });
+      resolve(mock({ 'data|5': ['@email'] }).data)
+    }, 300)
+  })
 }
 
 export default () => {
   const { data, loading, run } = useRequest(getEmail, {
     debounceWait: 1000,
     manual: true,
-  });
+  })
 
   return (
     <div>
@@ -30,5 +29,5 @@ export default () => {
         </ul>
       )}
     </div>
-  );
-};
+  )
+}

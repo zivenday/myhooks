@@ -1,6 +1,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './package/useSize/demo/demo1'
+import Basic from './package/useRequest/doc/debounce/demo/debounce'
+
+const App = () => {
+  console.log('////')
+  return (
+    <div>
+      <Basic></Basic>
+    </div>
+  )
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
